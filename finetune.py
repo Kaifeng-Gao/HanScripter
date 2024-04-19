@@ -53,7 +53,8 @@ if compute_dtype == torch.float16 and bitsandbytes_params['use_4bit']:
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
     quantization_config=bnb_config,
-    device_map=sft_params['device_map']
+    device_map=sft_params['device_map'],
+    token=model_cfg['access_token']
 )
 
 model.config.use_cache = False
