@@ -10,6 +10,7 @@ from transformers import (
 )
 from peft import LoraConfig, PeftModel
 from trl import SFTTrainer
+import os
 
 def load_config(config_path):
     with open(config_path, 'r') as file:
@@ -101,7 +102,8 @@ trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     peft_config=peft_config,
-    dataset_text_field="text",
+    # dataset_text_field="text",
+    dataset_text_field = "messages",
     max_seq_length=sft_params['max_seq_length'],
     tokenizer=tokenizer,
     args=training_arguments,
@@ -112,6 +114,7 @@ trainer = SFTTrainer(
 trainer.train()
 
 # Save the trained model
-trainer.model.save_pretrained(new_model_path)
+
+trainer.model.save_pretrained(os.path.join(train_args_cfg['output_dir'], new_model_path))
 
 print("Model training complete and saved to:", new_model_path)
