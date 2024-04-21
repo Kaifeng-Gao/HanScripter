@@ -31,7 +31,7 @@ model_path = model_cfg['model_path']
 new_model_path = model_cfg['new_model_path']
 # Prepare model, tokenizer, and datasets
 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, token=model_cfg['access_token'])
-dataset = load_dataset(model_cfg['dataset_path'], split="train")
+dataset = load_dataset(model_cfg['dataset_path'], model_cfg['dataset_config'], split="train")
 
 # Set BitsAndBytes configuration
 compute_dtype = getattr(torch, bitsandbytes_params['bnb_4bit_compute_dtype'])
@@ -102,7 +102,7 @@ trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     peft_config=peft_config,
-    # dataset_text_field="messages",
+    # dataset_text_field="text",
     max_seq_length=sft_params['max_seq_length'],
     tokenizer=tokenizer,
     args=training_arguments,
@@ -114,6 +114,6 @@ trainer.train()
 
 # Save the trained model
 
-trainer.model.save_pretrained(os.path.join(train_args_cfg['output_dir'], new_model_path))
+trainer.model.save_pretrained(new_model_path)
 
 print("Model training complete and saved to:", new_model_path)
