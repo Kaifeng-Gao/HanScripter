@@ -116,7 +116,7 @@ def convert_to_conversation(text):
     
     for snippet in snippets:
         if '[INST]' in snippet and '[/INST]' in snippet:
-            user, model = snippet.split('[/INST]')
+            user, model = snippet.split('[/INST]', 1)
             user = user.replace('[INST]', '').strip()
             model = model.replace('</s>', '').strip()
             if user:
@@ -140,6 +140,6 @@ subset_cnt = 0
 for i in range(0, DATASET_SIZE, STEP_SIZE):
     subset_cnt += 1
     dataset = load_dataset(DATASET_PATH, split=f"train[{i}:{min(i+STEP_SIZE, DATASET_SIZE)}]")
-    dataset_mistral = dataset.map(template_dataset, fn_kwargs={'augment': True})
+    dataset_mistral = dataset.map(template_dataset, fn_kwargs={'augment': False})
     dataset_mistral.save_to_disk(f"./dataset_instruct_message/subset_{subset_cnt}")
 

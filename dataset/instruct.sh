@@ -7,6 +7,6 @@
 
 module purge
 module load miniconda
-conda activate Llama
+conda activate cpsc577
 
 python instruct.py
