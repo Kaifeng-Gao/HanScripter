@@ -1,7 +1,7 @@
 model_config:
   access_token: "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"
   model_path: "meta-llama/Meta-Llama-3-8B-Instruct"
-  new_model_path: "./results/Llama-3-Han-Instruct"
+  new_model_path: "./results/Llama-3-Han"
   dataset_path: "KaifengGGG/WenYanWen_English_Parrallel"
   dataset_config: "instruct"
 
