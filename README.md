@@ -1,5 +1,5 @@
-# MistralHanWisdom
-Unveiling the Wisdom of Classical Chinese with Mistral
+# Llama-Han
+Unveiling the Wisdom of Classical Chinese with Llama
 
 ## Dataset
 
