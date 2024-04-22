@@ -1,8 +1,11 @@
+access_token:
+  huggingface_token: "Your Token"
+
 model_config:
-  access_token: # Hugging Face Access Token
   model_path: "meta-llama/Meta-Llama-3-8B-Instruct"
-  new_model_path: "Llama-3-Han"
-  dataset_path: "KaifengGGG/WenYanWen_English_Parrallel_QA"
+  new_model_path: "./results/Llama-3-Han"
+  dataset_path: "KaifengGGG/WenYanWen_English_Parrallel"
+  dataset_config: "instruct" # "instruct" "instruct-augmented"
 
 # Finetuning Hyperparams
 ## QLoRA
@@ -24,8 +27,8 @@ training_arguments:
   num_train_epochs: 1
   fp16: False
   bf16: True #set to True with A100
-  per_device_train_batch_size: 4
-  per_device_eval_batch_size: 4
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 2
   gradient_accumulation_steps: 4
   gradient_checkpointing: True
   max_grad_norm: 0.3

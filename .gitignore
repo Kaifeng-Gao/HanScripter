@@ -1,4 +1,4 @@
 results/
-config.yaml
 .ipynb_checkpoints/
 dataset/*.out
+config.yaml

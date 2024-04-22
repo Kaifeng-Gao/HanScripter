@@ -20,6 +20,7 @@ def load_config(config_path):
 config = load_config('config.yaml')
 
 # Setup configurations
+access_token = config['access_token']
 model_cfg = config['model_config']
 q_lora_params = config['q_lora_parameters']
 bitsandbytes_params = config['bitsandbytes_parameters']
@@ -30,7 +31,7 @@ sft_params = config['sft_parameters']
 model_path = model_cfg['model_path']
 new_model_path = model_cfg['new_model_path']
 # Prepare model, tokenizer, and datasets
-tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, token=model_cfg['access_token'])
+tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, token=access_token['huggingface_token'])
 dataset = load_dataset(model_cfg['dataset_path'], model_cfg['dataset_config'], split="train")
 
 # Set BitsAndBytes configuration
@@ -55,7 +56,7 @@ model = AutoModelForCausalLM.from_pretrained(
     model_path,
     quantization_config=bnb_config,
     device_map=sft_params['device_map'],
-    token=model_cfg['access_token']
+    token=access_token['huggingface_token']
 )
 
 model.config.use_cache = False
