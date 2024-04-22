@@ -38,6 +38,7 @@ dataset_path = args.dataset_path if args.dataset_path else model_cfg['dataset_pa
 dataset_config = args.dataset_config if args.dataset_config else model_cfg['dataset_config']
 num_shots = args.num_shots if args.num_shots else eval_cfg['num_shots']
 finetune = args.finetune if args.finetune else False
+cot = args.cot if args.cot else eval_cfg['cot']
 
 print('=' * 50)
 print("------------- eval_config -------------")
@@ -80,11 +81,17 @@ terminators = [
 
 # Initialize test dataset
 dataset = load_dataset(dataset_path, dataset_config)
-dataset_train, dataset_test = dataset.select_columns(["classical", "english"]).values()
+if cot:
+    dataset_train, dataset_test = dataset.select_columns(["classical", "modern", "english"]).values()
+else:
+    dataset_train, dataset_test = dataset.select_columns(["classical", "english"]).values()
 dataset_examples = dataset_test.select(range(num_shots))
 dataset_predict = dataset_test.select(range(num_shots, len(dataset_test)))
 
-prompt_template = "Classical: {classical}\nEnglish: {english}"
+if cot:
+    prompt_template = "Classical: {classical}\nModern: {modern}\nEnglish: {english}"
+else:
+    prompt_template = "Classical: {classical}\nEnglish: {english}"
 if num_shots == 0:
     prompt_examples = ""
 else:
@@ -95,7 +102,13 @@ prompts = []
 references = []
 for row in dataset_predict:
     message = []
-    prompt= prompt_examples + "\n"\
+    if cot:
+        prompt= prompt_examples + "\n"\
+            + "Translate the following sentence from classical Chinese into modern Chinese and then into English. Provide only the translation:" \
+            + prompt_template.format(classical=row["classical"], modern="", english="")[:-1]
+        
+    else:
+        prompt= prompt_examples + "\n"\
             + "Translate the following sentence from Classical Chinese into English. Provide only the translation:" \
             + prompt_template.format(classical=row["classical"], english="")[:-1]
     message.append({"role": "user", "content": prompt})
