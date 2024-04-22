@@ -18,8 +18,9 @@ def parse_args():
     parser.add_argument('--new_model_path', type=str, help='Path for saving the fine-tuned model')
     parser.add_argument('--dataset_path', type=str, help='Path to the dataset')
     parser.add_argument('--dataset_config', type=str, help='Dataset configuration')
-    parser.add_argument('--num_shots', type=int, help='Number of shots in instruction')
-    parser.add_argument('--finetune', type=bool, help='whether to use finetuned model')
+    parser.add_argument('--num_shots', type=int, help='Number of shots in evaluation')
+    parser.add_argument('--finetune', type=bool, help='Whether to use finetuned model')
+    parser.add_argument('--cot', type=bool, help='Whether to use cot in evaluation')
     return parser.parse_args()
 
 # Load configurations from YAML file
