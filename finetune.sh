@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=translate
-#SBATCH --time=01:00:00
+#SBATCH --time=06:00:00
 #SBATCH --partition=gpu
 #SBATCH --gpus=a100:1
 #SBATCH --mail-type=ALL

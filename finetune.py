@@ -114,7 +114,5 @@ trainer = SFTTrainer(
 trainer.train()
 
 # Save the trained model
-
 trainer.model.save_pretrained(new_model_path)
-
 print("Model training complete and saved to:", new_model_path)
