@@ -1,5 +1,6 @@
 access_token:
   huggingface_token: "Your Token"
+  google_token: "Your Token"
 
 model_config:
   model_path: "meta-llama/Meta-Llama-3-8B-Instruct"
