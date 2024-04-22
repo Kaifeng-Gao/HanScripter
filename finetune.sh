@@ -1,12 +1,13 @@
 #!/bin/bash
 
 #SBATCH --job-name=translate
-#SBATCH --time=2-00:00:00
-#SBATCH --partition=week
+#SBATCH --time=06:00:00
+#SBATCH --partition=gpu
+#SBATCH --gpus=a100:1
 #SBATCH --mail-type=ALL
 
 module purge
 module load miniconda
 conda activate cpsc577
 
-python instruct.py
+python finetune.py

@@ -61,10 +61,8 @@ TEMPLATES_AUGMENT = [
     "[INST] Analyze the grammatical structure of the following Classical Chinese sentence and provide its English translation: {classical} [/INST] Grammatical analysis: [...], English translation: {english}",
     "[INST] Given the Classical Chinese text: {classical}, provide a step-by-step translation process to arrive at the English translation. [/INST] Step 1: [...], Step 2: [...], [...], Final English translation: {english}",
     "[INST] Identify the tone and emotion conveyed in the Classical Chinese text and explain how it is achieved in English: {classical} [/INST] Tone and emotion: [...], Explanation in English: {english}",
-    "[INST] Given the Classical Chinese text: {classical}, provide its English translations, and discuss the differences in grammar and vocabulary between Classical Chinese and English. [/INST] English: {english}, Grammatical and vocabulary differences: [...]",
     "[INST] Highlight and translate the key terms in the Classical Chinese text: {classical}, and explain their significance in the context of the passage. [/INST] Key terms and their translations: [...], Final English translation: {english}",
     "[INST] From the Classical Chinese script: {classical}, document the translation approach to render an English version. [/INST] Initial step: [...], Following steps: [...], English rendition: {english}",
-    "[INST] Offer an English rendition of the specified Classical Chinese text, then elaborate on the grammatical and lexemic variances from Classical Chinese to English: {classical} [/INST] Rendition in English: {english}, Grammatical and lexemic variances: [...]",
     "[INST] Break down the structure and provide an English interpretation of the presented Classical Chinese phrase: {classical} [/INST] English interpretation: {english}, Structural analysis: [...]",
     "[INST] For the Classical Chinese excerpt: {classical}, detail the steps needed to accurately translate it into English. [/INST] Completed English translation: {english}, Step 1: [...], Step 2: [...], [...]"
 ]
@@ -112,9 +110,28 @@ def format_sample_with_template(sample, augment):
     return formatted_text
 
 
+def convert_to_conversation(text):
+    snippets = text.split('<s>')  # Split and remove the first and last useless parts.
+    messages = []
+    
+    for snippet in snippets:
+        if '[INST]' in snippet and '[/INST]' in snippet:
+            user, model = snippet.split('[/INST]', 1)
+            user = user.replace('[INST]', '').strip()
+            model = model.replace('</s>', '').strip()
+            if user:
+                messages.append({"role": "user", "content": user})
+            if model:
+                messages.append({"role": "assistant", "content": model})
+    
+    return messages
+
+
+
 def template_dataset(sample, augment):
     formatted_text = format_sample_with_template(sample, augment)
     sample["text"] = "<s>" + formatted_text + "</s>"
+    sample["messages"] = convert_to_conversation(sample["text"])
     return sample
 
 
@@ -123,6 +140,6 @@ subset_cnt = 0
 for i in range(0, DATASET_SIZE, STEP_SIZE):
     subset_cnt += 1
     dataset = load_dataset(DATASET_PATH, split=f"train[{i}:{min(i+STEP_SIZE, DATASET_SIZE)}]")
-    dataset_mistral = dataset.map(template_dataset, remove_columns=list(dataset.features), fn_kwargs={'augment': True})
-    dataset_mistral.save_to_disk(f"./dataset_instruct_ampp/subset_{subset_cnt}")
+    dataset_mistral = dataset.map(template_dataset, fn_kwargs={'augment': False})
+    dataset_mistral.save_to_disk(f"./dataset_instruct_message/subset_{subset_cnt}")
 

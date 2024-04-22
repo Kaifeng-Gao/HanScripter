@@ -1,0 +1,7 @@
+results/
+.ipynb_checkpoints/
+dataset/*.out
+config.yaml
+evaluate/*.out
+*.out
+dataset/playground.ipynb
