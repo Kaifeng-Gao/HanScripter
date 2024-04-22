@@ -44,7 +44,6 @@ print(f"Dataset Path: {dataset_path}")
 print(f"Dataset Config: {dataset_config}")
 print(f"Use Finetune Model: {finetune}")
 
-
 # Load model and initialize pipeline
 model, tokenizer = load_model(model_path, new_model_path, finetune=finetune)
 pipeline = transformers.pipeline(
