@@ -50,6 +50,7 @@ print(f"Dataset Path: {dataset_path}")
 print(f"Dataset Config: {dataset_config}")
 print(f"Number of Shots: {num_shots}")
 print(f"Use Finetune Model: {finetune}")
+print(f"Use COT: {cot}")
 
 # Load model and tokenizer
 model = AutoModelForCausalLM.from_pretrained(
@@ -105,12 +106,12 @@ for row in dataset_predict:
     message = []
     if cot:
         prompt= prompt_examples + "\n"\
-            + "Translate the following sentence from classical Chinese into modern Chinese and then into English. Provide only the translation:" \
+            + "Translate the following sentence from classical Chinese into modern Chinese and then into English. Provide only the translation:" + "\n" \
             + prompt_template.format(classical=row["classical"], modern="", english="")[:-1]
         
     else:
         prompt= prompt_examples + "\n"\
-            + "Translate the following sentence from Classical Chinese into English. Provide only the translation:" \
+            + "Translate the following sentence from Classical Chinese into English. Provide only the translation:" + "\n" \
             + prompt_template.format(classical=row["classical"], english="")[:-1]
     message.append({"role": "user", "content": prompt})
     message = pipeline.tokenizer.apply_chat_template(
@@ -133,7 +134,13 @@ outputs = pipeline(
     top_p=0.9,
 )
 predictions = [output[0]['generated_text'][len(prompt):] for output, prompt in zip(outputs, prompts)]
-
+if cot:
+    for i in range(len(predictions)):
+        prediction = predictions[i]
+        parts = prediction.split("English:")
+        if len(parts) > 1:
+            predictions[i] = parts[1].strip()
+    
 # Evaluation
 sacrebleu = evaluate.load("sacrebleu")
 sacrebleu_results=sacrebleu.compute(predictions=predictions, references=references)
@@ -154,6 +161,7 @@ print(chrf_results)
 print("")
 print("------------- example -------------")
 for i in range(10):
+    # print(prompts[i])
     print("system:", predictions[i])
     print("reference:", references[i][0])
 
