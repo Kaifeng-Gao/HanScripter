@@ -1,19 +1,12 @@
 import os
-import google.generativeai as genai
 from datasets import load_dataset
 import time
+from gemini_loader import GeminiLoader
 
-API_KEY = "AIzaSyAgxaTRfr-xUWVSCi3ef36Olgp87oFo8kY"
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel(
-    model_name='gemini-pro',
-    safety_settings = [ 
-    { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" } ]
-)
+CONFIG_PATH = 'config.yaml'
 
+gemini_loader = GeminiLoader(CONFIG_PATH)
+model = gemini_loader.create_model()
 
 def translate_modern(sample):
     '''

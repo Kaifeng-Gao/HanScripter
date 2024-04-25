@@ -1,12 +1,13 @@
 from datasets import load_dataset
+from gemini_loader import GeminiLoader
 import os
-import google.generativeai as genai
 import yaml
 import transformers, evaluate
 import argparse
 import sys
 import time
 
+CONFIG_PATH = 'config.yaml'
 
 def load_config(config_path):
     with open(config_path, 'r') as file:
@@ -23,7 +24,8 @@ def parse_args():
     return parser.parse_args()
 
 # Load configurations from YAML file
-config = load_config('config.yaml')
+
+config = load_config(CONFIG_PATH)
 
 # Setup configurations
 args = parse_args()
@@ -44,17 +46,11 @@ print(f"Dataset Path: {dataset_path}")
 print(f"Dataset Config: {dataset_config}")
 print(f"Number of Shots: {num_shots}")
 
-API_KEY = access_token['google_token']
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel(
-    model_name='gemini-pro',
-    safety_settings = [ 
-    { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" } ]
-)
+# Load Gemini
+gemini_loader = GeminiLoader(CONFIG_PATH)
+model = gemini_loader.create_model()
 
+# Load Dataset
 dataset = load_dataset(dataset_path, dataset_config)
 dataset_train, dataset_test = dataset.select_columns(["classical", "english"]).values()
 dataset_examples = dataset_test.select(range(num_shots))

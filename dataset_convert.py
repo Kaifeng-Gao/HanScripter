@@ -1,20 +1,11 @@
 from datasets import load_dataset
 import os
-import google.generativeai as genai
+from gemini_loader import GeminiLoader
 import random
 import time
 
-API_KEY = "AIzaSyAgxaTRfr-xUWVSCi3ef36Olgp87oFo8kY"
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel(
-    model_name='gemini-pro',
-    safety_settings = [ 
-    { "category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE" }, 
-    { "category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE" } ]
-)
 
+CONFIG_PATH = 'config.yaml'
 DATASET_PATH = "KaifengGGG/WenYanWen_English_Parrallel"
 DATASET_SIZE = 10000
 STEP_SIZE = 1000
@@ -67,6 +58,8 @@ TEMPLATES_AUGMENT = [
     "[INST] For the Classical Chinese excerpt: {classical}, detail the steps needed to accurately translate it into English. [/INST] Completed English translation: {english}, Step 1: [...], Step 2: [...], [...]"
 ]
 
+gemini_loader = GeminiLoader(CONFIG_PATH)
+model = gemini_loader.create_model()
 
 def format_sample_with_template(sample, augment):
     if augment:
