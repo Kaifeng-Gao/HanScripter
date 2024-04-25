@@ -4,9 +4,14 @@ access_token:
 
 model_config:
   model_path: "meta-llama/Meta-Llama-3-8B-Instruct"
-  new_model_path: "./results/Llama-3-Han"
+  new_model_path: "./results/Llama-3-Han-0423"
   dataset_path: "KaifengGGG/WenYanWen_English_Parrallel"
-  dataset_config: "instruct" # "instruct" "instruct-augmented"
+  dataset_config: "instruct"
+
+# Evaluation Params
+eval_config:
+  num_shots: 5
+  cot: False
 
 # Finetuning Hyperparams
 ## QLoRA
