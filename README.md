@@ -1,4 +1,4 @@
-# Llama-Han
+# HanScripter
 Unveiling the Wisdom of Classical Chinese with Llama
 
 ## Dataset
