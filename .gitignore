@@ -1,7 +1,8 @@
 results/
 .ipynb_checkpoints/
-dataset/*.out
 config.yaml
 evaluate/*.out
 *.out
-dataset/playground.ipynb
+dataset/
+dataset_convert.py
+dataset_translate.py

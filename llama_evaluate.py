@@ -37,7 +37,7 @@ model_path = args.model_path if args.model_path else model_cfg['model_path']
 new_model_path = args.new_model_path if args.new_model_path else model_cfg['new_model_path']
 dataset_path = args.dataset_path if args.dataset_path else model_cfg['dataset_path']
 dataset_config = args.dataset_config if args.dataset_config else model_cfg['dataset_config']
-num_shots = args.num_shots if args.num_shots else eval_cfg['num_shots']
+num_shots = args.num_shots if args.num_shots is not None else eval_cfg['num_shots']
 finetune = args.finetune if args.finetune else False
 cot = args.cot if args.cot else eval_cfg['cot']
 
