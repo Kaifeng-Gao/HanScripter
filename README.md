@@ -111,7 +111,7 @@ python finetune.py
 
 ### Evaluation
 
-Example:
+Llama Evaluation
 ```bash
 python llama_evaluate.py \
     --model_path "KaifengGGG/Llama3-8b-Hanscripter" \
@@ -120,6 +120,19 @@ python llama_evaluate.py \
     --num_shots 6
 # or sbatch model_evaluate.sh if on Yale High Performance Computing
 ```
-
+Gemini Evaluation
+```bash
+python gemini_evaluate.py \
+    --dataset_path "KaifengGGG/WenYanWen_English_Parallel" \
+    --dataset_config "instruct" \
+    --num_shots 6
+```
+GPT Evaluation
+```bash
+python gpt_evaluate.py \
+    --dataset_path "KaifengGGG/WenYanWen_English_Parallel" \
+    --dataset_config "instruct" \
+    --num_shots 6
+```
 
 
