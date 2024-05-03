@@ -5,6 +5,19 @@ Current large language models, while highly capable in processing modern Chinese
 
 To address this issue, we propose to develop a specialized language model that can bridge the gap, enabling efficient and accurate translation from classical Chinese to English. By leveraging advanced large language models, our goal is to make these literary works more accessible and understandable to a wider audience, fostering a deeper appreciation and preservation of this cultural heritage.
 
+## Dataset
+
+The [WenYanWen_English_Parallel](https://huggingface.co/datasets/KaifengGGG/WenYanWen_English_Parrallel) dataset is a multilingual parallel corpus in Classical Chinese (Wenyanwen), modern Chinese, and English. This dataset is created by Kaifeng Gao, Ke Lyu and Abbey Yuan.
+
+The code used to create and process the dataset can be found [here](https://github.com/Kaifeng-Gao/WenYanWen_English_Parallel).
+
+The final dataset contains four subsets:
+- **default**: A parallel translation dataset containing 972,467 translation pairs.
+- **instruct**: An instruction-tuning dataset consisting of prompt/answer pairs created from a 10,000-sample of the default subset.
+- **instruct-augment**: Similar to the instruct subset, with the distinction that the prompt/answer pairs have been augmented by Gemini-Pro.
+- **instruct-large**: An instruction-tuning dataset that includes all samples from the default dataset.
+\end{itemize}
+
 ## Models
 ### Base Models
 We selected the Meta-Llama-3-8B-Instruct model as our base model. This model, a member of the Llama 3 family, is an 8 billion-parameter instruction-tuned generative text model that operates in an auto-regressive manner. It utilizes an optimized transformer architecture and has been trained on a diverse dataset compiled from publicly available online sources. Additionally, it has been fine-tuned using techniques such as Supervised Fine-Tuning (SFT) and Reinforcement Learning from Human Feedback (RLHF). The model is accessible through the official Hugging Face repository [meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct); however, access may require prior application.
@@ -30,20 +43,6 @@ All three models can be accessed through Hugging Face [KaifengGGG/Llama3-8b-Hans
 | Llama3-8b-instruct (base model) | 9.804     | 0.325  | 33.393 | 0.892      |
 | Gemini-Pro                   | 13.378    | 0.388  | 37.599 | 0.907      |
 | GPT-4-Turbo                  | 13.284    | 0.393  | **38.335** | **0.908**    |
-
-
-## Dataset
-
-The [WenYanWen_English_Parallel](https://huggingface.co/datasets/KaifengGGG/WenYanWen_English_Parrallel) dataset is a multilingual parallel corpus in Classical Chinese (Wenyanwen), modern Chinese, and English. This dataset is created by Kaifeng Gao, Ke Lyu and Abbey Yuan.
-
-The code used to create and process the dataset can be found [here](https://github.com/Kaifeng-Gao/WenYanWen_English_Parallel).
-
-The final dataset contains four subsets:
-- **default**: A parallel translation dataset containing 972,467 translation pairs.
-- **instruct**: An instruction-tuning dataset consisting of prompt/answer pairs created from a 10,000-sample of the default subset.
-- **instruct-augment**: Similar to the instruct subset, with the distinction that the prompt/answer pairs have been augmented by Gemini-Pro.
-- **instruct-large**: An instruction-tuning dataset that includes all samples from the default dataset.
-\end{itemize}
 
 ## Dependency
 
