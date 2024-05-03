@@ -6,6 +6,7 @@ import transformers, evaluate
 import argparse
 import sys
 import time
+import translation_evaluate as te
 
 CONFIG_PATH = 'config.yaml'
 
@@ -93,23 +94,11 @@ for prompt in prompts:
                 time.sleep(60)  # Wait for 60 seconds before the next attempt
 
 # Evaluation
-sacrebleu = evaluate.load("sacrebleu")
-sacrebleu_results=sacrebleu.compute(predictions=predictions, references=references)
-print("------------- sacrebleu_results -------------")
-print(sacrebleu_results)
-
-meteor = evaluate.load('meteor')
-meteor_results = meteor.compute(predictions=predictions, references=references)
-print("------------- meteor_results -------------")
-print(meteor_results)
-
-chrf = evaluate.load("chrf")
-chrf_results = chrf.compute(predictions=predictions, references=references)
-print("------------- chrf_results -------------")
-print(chrf_results)
+results = te.evaluate_translation(predictions, references)
+te.print_results(results)
 
 # Example
 print("------------- example -------------")
-for i in range(10):
+for i in range(20):
     print("system:", predictions[i])
     print("reference:", references[i][0])

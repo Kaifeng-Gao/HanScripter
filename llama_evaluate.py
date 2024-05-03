@@ -6,6 +6,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import transformers, evaluate
 import argparse
 import sys
+import translation_evaluate as te
 
 
 def load_config(config_path):
@@ -142,25 +143,13 @@ if cot:
             predictions[i] = parts[1].strip()
     
 # Evaluation
-sacrebleu = evaluate.load("sacrebleu")
-sacrebleu_results=sacrebleu.compute(predictions=predictions, references=references)
-print("------------- sacrebleu_results -------------")
-print(sacrebleu_results)
-
-meteor = evaluate.load('meteor')
-meteor_results = meteor.compute(predictions=predictions, references=references)
-print("------------- meteor_results -------------")
-print(meteor_results)
-
-chrf = evaluate.load("chrf")
-chrf_results = chrf.compute(predictions=predictions, references=references)
-print("------------- chrf_results -------------")
-print(chrf_results)
+results = te.evaluate_translation(predictions, references)
+te.print_results(results)
 
 # Example
 print("")
 print("------------- example -------------")
-for i in range(10):
+for i in range(20):
     # print(prompts[i])
     print("system:", predictions[i])
     print("reference:", references[i][0])
