@@ -1,4 +1,5 @@
 # HanScripter
+![banner](imgs/hanscripter.jpg)
 **Classical Chinese (i.e. Wenyanwen 文言文) literature**, including poems, articles, and other literary works, represents a valuable cultural heritage of China and the world. However, due to the vast differences in grammar, semantics, and writing styles between classical and modern Chinese, most people today find it challenging to comprehend and appreciate these ancient texts fully. Although classical Chinese anthologies exist, they are often inaccessible or overwhelming for the general public.
 
 Current large language models, while highly capable in processing modern Chinese, struggle to accurately translate, interpret, and analyze classical Chinese texts. This limitation hinders the preservation and dissemination of these invaluable literary treasures, causing them to become increasingly distant and obscure to modern readers.
