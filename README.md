@@ -1,9 +1,9 @@
 # HanScripter
-Classical Chinese (i.e. Wenyanwen 文言文) literature, including poems, articles, and other literary works, represents a valuable cultural heritage of China and the world. However, due to the vast differences in grammar, semantics, and writing styles between classical and modern Chinese, most people today find it challenging to comprehend and appreciate these ancient texts fully. Although classical Chinese anthologies exist, they are often inaccessible or overwhelming for the general public.
+**Classical Chinese (i.e. Wenyanwen 文言文) literature**, including poems, articles, and other literary works, represents a valuable cultural heritage of China and the world. However, due to the vast differences in grammar, semantics, and writing styles between classical and modern Chinese, most people today find it challenging to comprehend and appreciate these ancient texts fully. Although classical Chinese anthologies exist, they are often inaccessible or overwhelming for the general public.
 
 Current large language models, while highly capable in processing modern Chinese, struggle to accurately translate, interpret, and analyze classical Chinese texts. This limitation hinders the preservation and dissemination of these invaluable literary treasures, causing them to become increasingly distant and obscure to modern readers.
 
-To address this issue, we propose to develop a specialized language model that can bridge the gap, enabling efficient and accurate translation from classical Chinese to English. By leveraging advanced large language models, our goal is to make these literary works more accessible and understandable to a wider audience, fostering a deeper appreciation and preservation of this cultural heritage.
+To address this issue, we develop a auto-regressive generative language model called **HanScripter**, which can provide efficient and accurate **translation from classical Chinese to English**. Our goal is to make these literary works more accessible and understandable to a wider audience, fostering a deeper appreciation and preservation of this cultural heritage.
 
 ## Dataset
 
@@ -20,7 +20,7 @@ The final dataset contains four subsets:
 
 ## Models
 ### Base Models
-We selected the Meta-Llama-3-8B-Instruct model as our base model. This model, a member of the Llama 3 family, is an 8 billion-parameter instruction-tuned generative text model that operates in an auto-regressive manner. It utilizes an optimized transformer architecture and has been trained on a diverse dataset compiled from publicly available online sources. Additionally, it has been fine-tuned using techniques such as Supervised Fine-Tuning (SFT) and Reinforcement Learning from Human Feedback (RLHF). The model is accessible through the official Hugging Face repository [meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct); however, access may require prior application.
+We selected the **Meta-Llama-3-8B-Instruct** model as our base model. This model, a member of the Llama 3 family, is an 8 billion-parameter instruction-tuned generative text model that operates in an auto-regressive manner. It utilizes an optimized transformer architecture and has been trained on a diverse dataset compiled from publicly available online sources. Additionally, it has been fine-tuned using techniques such as Supervised Fine-Tuning (SFT) and Reinforcement Learning from Human Feedback (RLHF). The model is accessible through the official Hugging Face repository [meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct); however, access may require prior application.
 
 ### Fine-tuning
 We used QLoRA to perform supervised fine-tuning. QLoRA uses 4-bit quantization to compress a pretrained language model. The LM parameters are then frozen and a relatively small number of trainable parameters are added to the model in the form of Low-Rank Adapters. During finetuning, QLoRA backpropagates gradients through the frozen 4-bit quantized pretrained language model into the Low-Rank Adapters. QLoRA reduces the memory usage of LLM finetuning without performance tradeoffs compared to standard 16-bit model finetuning and allow us to finetune Meta-Llama-3-8B-Instruct model with limit resources. The detailed hyper-parameters used in fine-tuning process can be found in our paper.
@@ -37,7 +37,7 @@ All three models can be accessed through Hugging Face [KaifengGGG/Llama3-8b-Hans
 ## Results
 | Model                        | sacreBLEU | chrF   | METEOR | $F_{BERT}$ |
 |------------------------------|-----------|--------|--------|------------|
-| Hanscripter-full             | **15.216** | **0.398** | 37.978 | **0.908**    |
+| **Hanscripter-full**             | **15.216** | **0.398** | 37.978 | **0.908**    |
 | Hanscripter-subset-Gemini    | 13.346    | **0.398** | 36.858 | 0.905      |
 | Hanscripter-subset           | 13.281    | 0.381  | 36.435 | 0.906      |
 | Llama3-8b-instruct (base model) | 9.804     | 0.325  | 33.393 | 0.892      |
@@ -107,8 +107,14 @@ python finetune.py
 ```
 
 ### Evaluation
+
+Example:
 ```bash
-python llama_evaluate.py --new_model_path "./results/Llama-3-Han-0422" --finetune True --num_shots 5
+python llama_evaluate.py \
+    --model_path "KaifengGGG/Llama3-8b-Hanscripter" \
+    --dataset_path "KaifengGGG/WenYanWen_English_Parallel" \
+    --dataset_config "instruct" \
+    --num_shots 6
 # or sbatch model_evaluate.sh if on Yale High Performance Computing
 ```
 
