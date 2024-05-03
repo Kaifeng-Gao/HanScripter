@@ -12,10 +12,12 @@ import translation_evaluate as te
 CONFIG_PATH = 'config.yaml'
 
 def load_config(config_path):
+    '''Load configurations from YAML file.'''
     with open(config_path, 'r') as file:
         return yaml.safe_load(file)
 
 def parse_args():
+    '''Parse command-line arguments.'''
     parser = argparse.ArgumentParser(description="Load and fine-tune a model")
     parser.add_argument('--model_path', type=str, help='Path to the base model')
     parser.add_argument('--new_model_path', type=str, help='Path for saving the fine-tuned model')

@@ -13,6 +13,7 @@ from trl import SFTTrainer
 import os
 
 def load_config(config_path):
+    '''Load configurations from YAML file.'''
     with open(config_path, 'r') as file:
         return yaml.safe_load(file)
 
@@ -30,11 +31,12 @@ sft_params = config['sft_parameters']
 # Initialize configuration with specified path
 model_path = model_cfg['model_path']
 new_model_path = model_cfg['new_model_path']
+
 # Prepare model, tokenizer, and datasets
 tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True, token=access_token['huggingface_token'])
 dataset = load_dataset(model_cfg['dataset_path'], model_cfg['dataset_config'], split="train")
 
-# Set BitsAndBytes configuration
+# Set BitsAndBytes Quantization configuration
 compute_dtype = getattr(torch, bitsandbytes_params['bnb_4bit_compute_dtype'])
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=bitsandbytes_params['use_4bit'],

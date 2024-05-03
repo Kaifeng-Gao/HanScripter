@@ -10,10 +10,12 @@ import translation_evaluate as te
 
 
 def load_config(config_path):
+    '''Load configurations from YAML file.'''
     with open(config_path, 'r') as file:
         return yaml.safe_load(file)
 
 def parse_args():
+    '''Parse command-line arguments.'''
     parser = argparse.ArgumentParser(description="Load and fine-tune a model")
     parser.add_argument('--model_path', type=str, help='Path to the model for evaluation')
     parser.add_argument('--dataset_path', type=str, help='Path to the dataset')
@@ -31,13 +33,14 @@ model_cfg = config['model_config']
 eval_cfg = config['eval_config']
 access_token = config['access_token']
 
-# Initialize Configurations
+# Read in command-line arguments, if provided, or use default values
 model_path = args.model_path if args.model_path else model_cfg['model_path']
 dataset_path = args.dataset_path if args.dataset_path else model_cfg['dataset_path']
 dataset_config = args.dataset_config if args.dataset_config else model_cfg['dataset_config']
 num_shots = args.num_shots if args.num_shots is not None else eval_cfg['num_shots']
 cot = args.cot if args.cot else eval_cfg['cot']
 
+# Print configurations
 print('=' * 50)
 print("------------- eval_config -------------")
 print(f"Configuration used:")
@@ -68,6 +71,8 @@ pipeline = transformers.pipeline(
     tokenizer=tokenizer,
     model_kwargs={"torch_dtype": torch.bfloat16}
 )
+
+# Define terminators
 terminators = [
     pipeline.tokenizer.eos_token_id,
     pipeline.tokenizer.convert_tokens_to_ids("<|eot_id|>")
@@ -82,10 +87,13 @@ else:
 dataset_examples = dataset_test.select(range(num_shots))
 dataset_predict = dataset_test.select(range(num_shots, len(dataset_test)))
 
+# Initialize prompt template
 if cot:
     prompt_template = "Classical: {classical}\nModern: {modern}\nEnglish: {english}"
 else:
     prompt_template = "Classical: {classical}\nEnglish: {english}"
+
+# Initialize prompt examples
 if num_shots == 0:
     prompt_examples = ""
 else:
@@ -114,8 +122,9 @@ for row in dataset_predict:
     prompts.append(message)
     references.append([reference])
 
-# Outputs
-# prompts, references = prompts[:10], references[:10]
+# Generate Output
+
+# prompts, references = prompts[:10], references[:10] # For test
 print("# of test samples:", len(prompts))
 outputs = pipeline(
     prompts,
@@ -132,7 +141,7 @@ if cot:
         parts = prediction.split("English:")
         if len(parts) > 1:
             predictions[i] = parts[1].strip()
-    
+  
 # Evaluation
 results = te.evaluate_translation(predictions, references)
 te.print_results(results)
