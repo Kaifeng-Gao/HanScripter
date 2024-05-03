@@ -6,6 +6,10 @@ Current large language models, while highly capable in processing modern Chinese
 To address this issue, we propose to develop a specialized language model that can bridge the gap, enabling efficient and accurate translation from classical Chinese to English. By leveraging advanced large language models, our goal is to make these literary works more accessible and understandable to a wider audience, fostering a deeper appreciation and preservation of this cultural heritage.
 
 ## Models
+We selected the Meta-Llama-3-8B-Instruct model as our base model. This model, a member of the Llama 3 family, is an 8 billion-parameter instruction-tuned generative text model that operates in an auto-regressive manner. It utilizes an optimized transformer architecture and has been trained on a diverse dataset compiled from publicly available online sources. Additionally, it has been fine-tuned using techniques such as Supervised Fine-Tuning (SFT) and Reinforcement Learning from Human Feedback (RLHF). The model is accessible through the official Hugging Face repository ![meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct); however, access may require prior application.
+
+We used QLoRA (\cite{qlora}) to perform supervised fine-tuning. QLoRA uses 4-bit quantization to compress a pretrained language model. The LM parameters are then frozen and a relatively small number of trainable parameters are added to the model in the form of Low-Rank Adapters. During finetuning, QLoRA backpropagates gradients through the frozen 4-bit quantized pretrained language model into the Low-Rank Adapters. QLoRA reduces the memory usage of LLM finetuning without performance tradeoffs compared to standard 16-bit model finetuning and allow us to finetune Meta-Llama-3-8B-Instruct model with limit resources. The detailed hyper-parameters used in fine-tuning process is listed in table 
+
 We trained three models using different subsets of the [KaifengGGG/WenYanWen_English_Parallel](https://huggingface.co/datasets/KaifengGGG/WenYanWen_English_Parallel) dataset:
 
 - **Hanscripter-subset**: Trained on the *instruct* subset of the dataset.
