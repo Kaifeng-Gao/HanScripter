@@ -1,5 +1,20 @@
 # HanScripter
-Unveiling the Wisdom of Classical Chinese with Llama
+Classical Chinese (i.e. Wenyanwen 文言文) literature, including poems, articles, and other literary works, represents a valuable cultural heritage of China and the world. However, due to the vast differences in grammar, semantics, and writing styles between classical and modern Chinese, most people today find it challenging to comprehend and appreciate these ancient texts fully. Although classical Chinese anthologies exist, they are often inaccessible or overwhelming for the general public.
+
+Current large language models, while highly capable in processing modern Chinese, struggle to accurately translate, interpret, and analyze classical Chinese texts. This limitation hinders the preservation and dissemination of these invaluable literary treasures, causing them to become increasingly distant and obscure to modern readers.
+
+To address this issue, we propose to develop a specialized language model that can bridge the gap, enabling efficient and accurate translation from classical Chinese to English. By leveraging advanced large language models, our goal is to make these literary works more accessible and understandable to a wider audience, fostering a deeper appreciation and preservation of this cultural heritage.
+
+## Models
+We trained three models using different subsets of the [KaifengGGG/WenYanWen_English_Parallel](https://huggingface.co/datasets/KaifengGGG/WenYanWen_English_Parallel) dataset:
+
+- **Hanscripter-subset**: Trained on the *instruct* subset of the dataset.
+- **Hanscripter-subset-Gemini**: Trained on the *instruct-augment* subset of the dataset.
+- **Hanscripter-full**: Trained on the *instruct-large* subset of the dataset.
+
+## Results
+
+
 
 ## Dataset
 
