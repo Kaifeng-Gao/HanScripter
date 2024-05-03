@@ -20,8 +20,16 @@ We trained three models using different subsets of the [KaifengGGG/WenYanWen_Eng
 - **Hanscripter-full**: Trained on the *instruct-large* subset of the dataset.
 
 All three models can be accessed through Hugging Face [KaifengGGG/Llama3-8b-Hanscripter](https://huggingface.co/KaifengGGG/Llama3-8b-Hanscripter).
-## Results
 
+## Results
+| Model                        | sacreBLEU | chrF   | METEOR | $F_{BERT}$ |
+|------------------------------|-----------|--------|--------|------------|
+| Hanscripter-full             | **15.216** | **0.398** | 37.978 | **0.908**    |
+| Hanscripter-subset-Gemini    | 13.346    | **0.398** | 36.858 | 0.905      |
+| Hanscripter-subset           | 13.281    | 0.381  | 36.435 | 0.906      |
+| Llama3-8b-instruct (base model) | 9.804     | 0.325  | 33.393 | 0.892      |
+| Gemini-Pro                   | 13.378    | 0.388  | 37.599 | 0.907      |
+| GPT-4-Turbo                  | 13.284    | 0.393  | **38.335** | **0.908**    |
 
 
 ## Dataset
