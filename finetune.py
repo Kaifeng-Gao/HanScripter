@@ -113,6 +113,20 @@ trainer = SFTTrainer(
 # Start training
 trainer.train()
 
-# Save the trained model
-trainer.model.save_pretrained(new_model_path)
-print("Model training complete and saved to:", new_model_path)
+# Save the lora model
+new_model_path_lora = new_model_path + "-lora"
+trainer.model.save_pretrained(new_model_path_lora)
+print("Model training complete and peft adapter saved to:", new_model_path_lora)
+
+# merge lora model with base model
+torch.cuda.empty_cache()
+model = AutoModelForCausalLM.from_pretrained(model_path)
+model = PeftModel.from_pretrained(model, new_model_path_lora)
+model = model.merge_and_unload()
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = "right"
+
+# merge 
+model.save_pretrained(new_model_path)
+tokenizer.save_pretrained(new_model_path)
+print("Model load complete and full model saved to:", new_model_path)
