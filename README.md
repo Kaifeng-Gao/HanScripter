@@ -107,8 +107,14 @@ python finetune.py
 ```
 
 ### Evaluation
+
+Example:
 ```bash
-python llama_evaluate.py --new_model_path "./results/Llama-3-Han-0422" --finetune True --num_shots 5
+python llama_evaluate.py \
+    --model_path "KaifengGGG/Llama3-8b-Hanscripter" \
+    --dataset_path "KaifengGGG/WenYanWen_English_Parallel" \
+    --dataset_config "instruct" \
+    --num_shots 6
 # or sbatch model_evaluate.sh if on Yale High Performance Computing
 ```
 
