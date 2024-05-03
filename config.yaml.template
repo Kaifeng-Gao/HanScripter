@@ -15,7 +15,7 @@ eval_config:
   cot: False
 
 # Finetuning Hyperparams
-## QLoRA
+## LoRA
 q_lora_parameters:
   lora_r: 64
   lora_alpha: 16
