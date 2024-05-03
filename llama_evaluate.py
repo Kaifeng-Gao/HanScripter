@@ -6,7 +6,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import transformers, evaluate
 import argparse
 import sys
-import translation_evaluate as te
+from utils import translation_evaluate as te
 
 
 def load_config(config_path):

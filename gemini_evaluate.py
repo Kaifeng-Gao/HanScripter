@@ -1,12 +1,12 @@
 from datasets import load_dataset
-from gemini_loader import GeminiLoader
+from utils.gemini_loader import GeminiLoader
 import os
 import yaml
 import transformers, evaluate
 import argparse
 import sys
 import time
-import translation_evaluate as te
+from utils import translation_evaluate as te
 
 CONFIG_PATH = 'config.yaml'
 
