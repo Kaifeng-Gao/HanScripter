@@ -1,6 +1,7 @@
 from evaluate import load
 
 def evaluate_translation(predictions, references):
+    '''Evaluate the translation using various metrics.'''
     # Define the metrics to use
     metrics = {
         "sacrebleu": load("sacrebleu"),
@@ -31,6 +32,7 @@ def evaluate_translation(predictions, references):
     return results
 
 def print_results(results):
+    '''Print the results of the evaluation.'''
     for metric_name, result in results.items():
         print(f"------------- {metric_name} results -------------")
         print(result)
